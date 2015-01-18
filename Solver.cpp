@@ -1,15 +1,7 @@
-#include "cell.hpp"
+ #include "cell.hpp"
 #include <exception>
-#include <stack>
+#include <algorithm>
 using namespace std;
-
-//0<=row<9
-//0<=col<9
-//0<=box<9
-//0< val<=9
-
-
-
 
 int boxId(int row, int col)
 {
@@ -17,69 +9,58 @@ int boxId(int row, int col)
 	int l = col/3;
 	return  k*3 + l;	
 }
-bool legal(set<cell> const& state, cell const& cur)
-{
-	bool ok=true;
-	for(set<cell>::const_iterator it = state.cbegin(); ok && it!=state.cend(); ++it)
-	{
-		if( it->val == cur.val && (it->row == cur.row || it->col == cur.col || it->box == cur.box))
-			ok = false;
-	}
 
-	return ok;
+bool legal(set<cell> const& state,  cell const& cur)
+{
+	set<cell>::const_iterator it = find_if(state.cbegin(), state.cend(), [&](cell const& c)
+	{
+		return  (c.val == cur.val && (c.row == cur.row || c.col == cur.col || c.box == cur.box));
+			
+	});
+
+	return it == state.cend();
 }
 
-
-
-
-
-void ComputeSolution(set<cell>& currentState)
+bool GetNextFreeCell(cell& curCell, set<cell>& currentState)
 {
-	stack<cell> currentSolution;
-	while (currentState.size() < 81)
+	
+	return currentState.end() != find_if(currentState.begin(), currentState.end(),
+			[&](cell const& c)
+		{
+			if (curCell < c)
+				return true;
+			else
+				return ++curCell, false;
+		});
+}
+
+bool ComputeSolution(set<cell>& currentState)
+{
+	cell const lastCell = { 9, 9, 9, 9 };
+
+	if (currentState.size() == 81)
 	{
-		//find the first empty cell
-		cell emptycell={0,0,0,0};
-		for(set<cell>::iterator it = currentState.begin(); it!=currentState.end(); ++it)
-		{
-			if (emptycell < *it)
-				break;
-		    ++emptycell;
-		}
-		emptycell.box = boxId(emptycell.row, emptycell.col);
-		//fill the empty cell
-		bool found = false;
-		for(int val=1; val <=9 && !found; ++val)
-		{
-			emptycell.val = val;
-			found = legal(currentState,emptycell);
-		}
+		return true;
+	}
+	//find the first empty cell
+	cell emptycell = { 0, 0, 0, 0 };
+	GetNextFreeCell(emptycell, currentState);
+	emptycell.box = boxId(emptycell.row, emptycell.col);
+	//fill the empty cell
+	for (int val = 1; val <= 9 ; ++val)
+	{
+		emptycell.val = val;
+		bool found = legal(currentState,  emptycell);
 		if (found)
 		{
-			currentSolution.push(emptycell);
-			currentState.insert(emptycell);
-
-		}
-		
-		while(!found)
-		{
-			cell&   x = currentSolution.top();
-			
-			currentState.erase(x);
-			
-			while(!found && x.incrementVal())
+			set<cell> newstate(currentState);
+			newstate.insert(emptycell);
+			if (ComputeSolution(newstate))
 			{
-				found = legal(currentState,x);
-			}
-			if (found)
-			{
-				currentState.insert(x);
-			}
-			else
-			{
-				currentSolution.pop();
+				currentState.swap(newstate);
+				return true;
 			}
 		}
 	}
-	 
+	return false;
 }
