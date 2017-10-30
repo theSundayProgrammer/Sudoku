@@ -9,27 +9,28 @@
 #include <algorithm>
 
 #include "cell.hpp"
-#include <exception>
+#include <stdexcept>
 
 using namespace std;
 void getdat(FILE* fp, void (*updDat)(int,int,int));
 set<cell> curState;
 
-struct inserter
+struct tsp_inserter
 {
 	set<cell>& state;
-	inserter(set<cell>& state_): state(state_){};
-	inserter& operator()(int row, int col, int val)
+	tsp_inserter(set<cell>& state_): state(state_){};
+	tsp_inserter& operator()(int row, int col, int val)
 	{
 		cell t={row,col,boxId(row,col), val};
 		set<cell>::iterator it = state.find(t);
-		if(!legal(state,t)) throw std::exception("illegal");
+		if(!legal(state,t)) 
+			throw std::invalid_argument("illegal");
 		state.insert(t);
 		return *this;
 	}
 };
 
-inserter insert(curState);
+tsp_inserter insert(curState);
 
 
 void outputSol(set<cell> const& currentState)
