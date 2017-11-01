@@ -1,7 +1,7 @@
 #ifndef THESUNDAYPROGRAMMER_SUDOKU
 #define THESUNDAYPROGRAMMER_SUDOKU
 
-#include <set>
+#include <vector>
 struct cell
 {
 	int row;
@@ -27,9 +27,9 @@ struct cell
 };  
 int boxId(int row, int col);
 
-bool legal(std::set<cell> const& state, cell const& cur);
+bool legal(std::vector<cell> const& state, cell const& cur);
 
-bool ComputeSolution(std::set<cell>& currentState);
+bool ComputeSolution(std::vector<cell>& currentState);
 inline bool operator<(cell const& x, cell const& y)
 {
 	return x.row<y.row || (x.row==y.row && x.col<y.col);   

@@ -3,7 +3,7 @@
 
 //#include "stdafx.h"
 #include <stdio.h>
-#include <set>
+#include <vector>
 #include <cassert>
 #include <stack>
 #include <algorithm>
@@ -14,19 +14,18 @@
 using namespace std;
 void getdat(FILE* fp, void (*updDat)(int,int,int));
 void getdat2(FILE* fp, void (*updDat)(int,int,int));
-set<cell> curState;
+vector<cell> curState;
 
 struct tsp_inserter
 {
-	set<cell>& state;
-	tsp_inserter(set<cell>& state_): state(state_){};
+	vector<cell>& state;
+	tsp_inserter(vector<cell>& state_): state(state_){};
 	tsp_inserter& operator()(int row, int col, int val)
 	{
 		cell t={row,col,boxId(row,col), val};
-		set<cell>::iterator it = state.find(t);
 		if(!legal(state,t)) 
 			throw std::invalid_argument("illegal");
-		state.insert(t);
+		state.push_back(t);
 		return *this;
 	}
 };
@@ -34,23 +33,21 @@ struct tsp_inserter
 tsp_inserter insert(curState);
 
 
-void outputSol(set<cell> const& currentState)
+void outputSol(vector<cell> const& currentState)
 {
 	int prevRow=0;
-	set<cell>::const_iterator fin=currentState.cend();
-	set<cell>::const_iterator start=currentState.cbegin();
-	for(set<cell>::const_iterator it = start; it!=fin; ++it)
+	for (auto const& c : currentState)
 	{
-		if(prevRow != it->row)
+		if(prevRow != c.row)
 		{
-			prevRow = it->row;
+			prevRow = c.row;
 			printf("\n");
 			if(prevRow%3 == 0)
 				printf("----------------------\n");
 		}
-		if (it->col > 0 && it->col%3==0)
+		if (c.col > 0 && c.col%3==0)
 			printf("| ");
-		printf("%d ", it->val);
+		printf("%d ", c.val);
    }
    getchar();
 }
@@ -66,9 +63,10 @@ int main(int argc, char* argv[])
 		getdat2(fp,insertDat);
 		fclose(fp);
 	}	
-
+	   printf("Reading done\n");
 	ComputeSolution(curState);
-
+	   printf("Printing\n");
+	std::sort(curState.begin(),curState.end());
 	outputSol(curState);
 	return 0;
 }

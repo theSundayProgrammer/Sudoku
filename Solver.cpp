@@ -1,6 +1,8 @@
  #include "cell.hpp"
 #include <exception>
 #include <algorithm>
+#include <vector>
+#include <stdio.h>
 using namespace std;
 
 int boxId(int row, int col)
@@ -10,55 +12,53 @@ int boxId(int row, int col)
 	return  k*3 + l;	
 }
 
-bool legal(set<cell> const& state,  cell const& cur)
+bool legal(vector<cell> const& state,  cell const& cur)
 {
-	set<cell>::const_iterator it = find_if(state.cbegin(), state.cend(), [&](cell const& c)
+	return  state.cend() == find_if(state.cbegin(), state.cend(), [&](cell const& c)
 	{
 		return  (c.val == cur.val && (c.row == cur.row || c.col == cur.col || c.box == cur.box));
 			
 	});
 
-	return it == state.cend();
+}
+cell const lastCell = { 9, 9, 9, 9 };
+cell GetNextFreeCell(vector<cell> const & currentState)
+{
+	int cells[9][9];
+	for (size_t i=0; i<9; ++i)
+		for (size_t j=0; j<9; ++j)
+			cells[i][j]=0;
+    for (auto const& c: currentState)
+    	cells[c.row][c.col] = c.val;
+    for (size_t i=0; i<9; ++i)
+    	for (size_t j=0; j<9; ++j)
+    		if(cells[i][j]==0)
+    		{
+    			cell c = {i , j, boxId(i,j), 0};
+    			return c;
+    		}
+    return lastCell;
 }
 
-bool GetNextFreeCell(cell& curCell, set<cell>& currentState)
-{
-	
-	return currentState.end() != find_if(currentState.begin(), currentState.end(),
-			[&](cell const& c)
-		{
-			if (curCell < c)
-				return true;
-			else
-				return ++curCell, false;
-		});
-}
+bool ComputeSolution(vector<cell>& currentState){
 
-bool ComputeSolution(set<cell>& currentState)
-{
-	cell const lastCell = { 9, 9, 9, 9 };
-
-	if (currentState.size() == 81)
-	{
+    //printf("Compute Solution\n");
+	if (currentState.size() == 81)	{
 		return true;
 	}
 	//find the first empty cell
-	cell emptycell = { 0, 0, 0, 0 };
-	GetNextFreeCell(emptycell, currentState);
-	emptycell.box = boxId(emptycell.row, emptycell.col);
+	cell emptycell = 	GetNextFreeCell( currentState);
+     //printf("%d,%d,%d\n", emptycell.row, emptycell.col, emptycell.box);
 	//fill the empty cell
-	for (int val = 1; val <= 9 ; ++val)
-	{
+	for (int val = 1; val <= 9 ; ++val)	{
 		emptycell.val = val;
 		bool found = legal(currentState,  emptycell);
-		if (found)
-		{
-			set<cell> newstate(currentState);
-			newstate.insert(emptycell);
-			if (ComputeSolution(newstate))
-			{
-				currentState.swap(newstate);
+		if (found){
+			currentState.push_back(emptycell);
+			if (ComputeSolution(currentState)){
 				return true;
+			}else{
+				currentState.pop_back();
 			}
 		}
 	}
