@@ -13,6 +13,7 @@
 
 using namespace std;
 void getdat(FILE* fp, void (*updDat)(int,int,int));
+void getdat2(FILE* fp, void (*updDat)(int,int,int));
 set<cell> curState;
 
 struct tsp_inserter
@@ -62,7 +63,7 @@ int main(int argc, char* argv[])
 	FILE *fp=fopen(argv[1], "r");
 	if (fp!=NULL)
 	{
-		getdat(fp,insertDat);
+		getdat2(fp,insertDat);
 		fclose(fp);
 	}	
 
