@@ -1,10 +1,10 @@
 //#include "stdafx.h"
 #include <cstdio>
-void getdat2(FILE* fp, void (*updDat)(int,int,int))
+void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t))
 {
-  int c;
-  int x =0;
-  int y =0;
+  size_t c;
+  size_t x =0;
+  size_t y =0;
   auto incr = [&]  ()  
   {
      if (++y == 9)
@@ -25,16 +25,16 @@ void getdat2(FILE* fp, void (*updDat)(int,int,int))
   }
 }
 
-void getdat(FILE* fp, void (*updDat)(int,int,int))
+void getdat(FILE* fp, void (*updDat)(size_t,size_t,size_t))
 {
-	int x,y,w;
+	size_t x,y,w;
 	bool fin=false;
 	while (!fin)
 	{
 		int c = getc(fp);
 		while (c!='(') c = getc(fp);
 		ungetc(c,fp);
-		fscanf(fp,"(%d,%d,%d)", &x, &y, &w);
+		fscanf(fp,"(%ld,%ld,%ld)", &x, &y, &w);
 		updDat(x,y,w);
 		
 		c =getc(fp);

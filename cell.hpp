@@ -4,10 +4,10 @@
 #include <vector>
 struct cell
 {
-	int row;
-	int col;
-	int box;
-	int val;
+	size_t row;
+	size_t col;
+	size_t box;
+	size_t val;
 	cell& operator++()
 	{
 		if (col<8) ++col;
@@ -21,18 +21,18 @@ struct cell
 			++val;
 			return true;
 		}
-		else 
+		else
 			return false;
 	}
-};  
-int boxId(int row, int col);
+};
+size_t boxId(size_t row, size_t col);
 
 bool legal(std::vector<cell> const& state, cell const& cur);
 
 bool ComputeSolution(std::vector<cell>& currentState);
 inline bool operator<(cell const& x, cell const& y)
 {
-	return x.row<y.row || (x.row==y.row && x.col<y.col);   
+	return x.row<y.row || (x.row==y.row && x.col<y.col);
 }
 
 #endif // !THESUNDAYPROGRAMMER_SUDOKU

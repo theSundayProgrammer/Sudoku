@@ -4,11 +4,11 @@
 #include <vector>
 #include <stdio.h>
 using namespace std;
-
-int boxId(int row, int col)
+const size_t SUDOKU_SIZE=9;
+size_t boxId(size_t row, size_t col)
 {
-	int k = row/3;
-	int l = col/3;
+	size_t k = row/3;
+	size_t l = col/3;
 	return  k*3 + l;	
 }
 
@@ -21,17 +21,20 @@ bool legal(vector<cell> const& state,  cell const& cur)
 	});
 
 }
-cell const lastCell = { 9, 9, 9, 9 };
+cell const lastCell = { SUDOKU_SIZE, SUDOKU_SIZE, SUDOKU_SIZE, 0 };
 cell GetNextFreeCell(vector<cell> const & currentState)
 {
-	int cells[9][9];
-	for (size_t i=0; i<9; ++i)
-		for (size_t j=0; j<9; ++j)
+	size_t cells[SUDOKU_SIZE][SUDOKU_SIZE];
+	//initi cells to zero
+	for (size_t i=0; i<SUDOKU_SIZE; ++i)
+		for (size_t j=0; j<SUDOKU_SIZE; ++j)
 			cells[i][j]=0;
+	//populate cells using currenState
     for (auto const& c: currentState)
     	cells[c.row][c.col] = c.val;
-    for (size_t i=0; i<9; ++i)
-    	for (size_t j=0; j<9; ++j)
+    //Search for the first empty cell
+    for (size_t i=0; i<SUDOKU_SIZE; ++i)
+    	for (size_t j=0; j<SUDOKU_SIZE; ++j)
     		if(cells[i][j]==0)
     		{
     			cell c = {i , j, boxId(i,j), 0};
@@ -50,7 +53,7 @@ bool ComputeSolution(vector<cell>& currentState){
 	cell emptycell = 	GetNextFreeCell( currentState);
      //printf("%d,%d,%d\n", emptycell.row, emptycell.col, emptycell.box);
 	//fill the empty cell
-	for (int val = 1; val <= 9 ; ++val)	{
+	for (size_t val = 1; val <= SUDOKU_SIZE ; ++val)	{
 		emptycell.val = val;
 		bool found = legal(currentState,  emptycell);
 		if (found){

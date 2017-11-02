@@ -12,15 +12,15 @@
 #include <stdexcept>
 
 using namespace std;
-void getdat(FILE* fp, void (*updDat)(int,int,int));
-void getdat2(FILE* fp, void (*updDat)(int,int,int));
+void getdat(FILE* fp, void (*updDat)(size_t,size_t,size_t));
+void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t));
 vector<cell> curState;
 
 struct tsp_inserter
 {
 	vector<cell>& state;
 	tsp_inserter(vector<cell>& state_): state(state_){};
-	tsp_inserter& operator()(int row, int col, int val)
+	tsp_inserter& operator()(size_t row, size_t col, size_t val)
 	{
 		cell t={row,col,boxId(row,col), val};
 		if(!legal(state,t)) 
@@ -35,7 +35,7 @@ tsp_inserter insert(curState);
 
 void outputSol(vector<cell> const& currentState)
 {
-	int prevRow=0;
+	size_t prevRow=0;
 	for (auto const& c : currentState)
 	{
 		if(prevRow != c.row)
@@ -47,11 +47,10 @@ void outputSol(vector<cell> const& currentState)
 		}
 		if (c.col > 0 && c.col%3==0)
 			printf("| ");
-		printf("%d ", c.val);
+		printf("%ld ", c.val);
    }
-   getchar();
 }
-void insertDat(int x, int y , int w)
+void insertDat(size_t x, size_t y , size_t w)
 {
 	insert(x,y,w);
 }
