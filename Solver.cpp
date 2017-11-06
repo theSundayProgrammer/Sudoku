@@ -28,10 +28,7 @@ size_t boxId(size_t row, size_t col)
     return true;
   }
 cell const lastCell = { SUDOKU_SIZE, SUDOKU_SIZE};
-class SudokuSolver{
-  public:
-  SudokuSolver(){}
-  cell GetNextFreeCell() const
+  cell GetNextFreeCell() 
   {
     //Search for the first empty cell
     for (size_t i=0; i<SUDOKU_SIZE; ++i)
@@ -43,7 +40,7 @@ class SudokuSolver{
         }
     return lastCell;
   }
-  bool solve()
+static  bool solve()
   {
     //find the first empty cell
     auto c= GetNextFreeCell( );
@@ -63,8 +60,6 @@ class SudokuSolver{
     }
     return false;
   }
-};
 bool ComputeSolution(){
-	SudokuSolver solver;
-	return solver.solve();
+	return solve();
 }
