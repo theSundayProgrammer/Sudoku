@@ -25,22 +25,3 @@ void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t))
   }
 }
 
-void getdat(FILE* fp, void (*updDat)(size_t,size_t,size_t))
-{
-	size_t x,y,w;
-	bool fin=false;
-	while (!fin)
-	{
-		int c = getc(fp);
-		while (c!='(') c = getc(fp);
-		ungetc(c,fp);
-		fscanf(fp,"(%ld,%ld,%ld)", &x, &y, &w);
-		updDat(x,y,w);
-		
-		c =getc(fp);
-		if( c!=';')
-			ungetc(c,fp);
-		else
-			fin = true;
-	}
-}

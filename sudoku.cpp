@@ -25,7 +25,7 @@ void outputSol()
     {
       if (j>0 && j%3==0)
         printf("|");
-      printf("%-2d", cells[i][j]);
+      printf("%-2lu", cells[i][j]);
     }
     printf("\n");
     if (i%3==2)
@@ -44,11 +44,11 @@ int main(int argc, char* argv[])
   FILE *fp=fopen(argv[1], "r");
   if (fp!=NULL)
   {
-    getdat2(fp,insertDat);
     //initi cells to zero
     for (size_t i=0; i<SUDOKU_SIZE; ++i)
       for (size_t j=0; j<SUDOKU_SIZE; ++j)
         cells[i][j]=0;
+    getdat2(fp,insertDat);
     fclose(fp);
     printf("Reading done\n");
     ComputeSolution();
