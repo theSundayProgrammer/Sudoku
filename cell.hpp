@@ -6,12 +6,6 @@ struct cell
 {
   size_t row;
   size_t col;
-  cell& operator++()
-  {
-    if (col<8) ++col;
-    else { ++row; col= 0;}
-    return *this;
-  }
 };
 size_t boxId(size_t row, size_t col);
 
