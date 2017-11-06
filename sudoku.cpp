@@ -52,21 +52,27 @@ void outputSol(vector<cell> const& currentState)
 }
 void insertDat(size_t x, size_t y , size_t w)
 {
-	insert(x,y,w);
+  cell c{x,y,0,w};
+  if (is_legal(c))
+    cells[x][y]=w;
 }
 int main(int argc, char* argv[])
 {
-	FILE *fp=fopen(argv[1], "r");
-	if (fp!=NULL)
-	{
-		getdat2(fp,insertDat);
-		fclose(fp);
-	}	
-	   printf("Reading done\n");
-	ComputeSolution(curState);
-	   printf("Printing\n");
-	std::sort(curState.begin(),curState.end());
-	outputSol(curState);
-	return 0;
+  FILE *fp=fopen(argv[1], "r");
+  if (fp!=NULL)
+  {
+    getdat2(fp,insertDat);
+    //initi cells to zero
+    for (size_t i=0; i<SUDOKU_SIZE; ++i)
+      for (size_t j=0; j<SUDOKU_SIZE; ++j)
+        cells[i][j]=0;
+    fclose(fp);
+    printf("Reading done\n");
+    ComputeSolution(curState);
+    printf("Printing\n");
+    std::sort(curState.begin(),curState.end());
+    outputSol(curState);
+  }	
+  return 0;
 }
 
