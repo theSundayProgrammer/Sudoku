@@ -10,6 +10,22 @@ size_t boxId(size_t row, size_t col)
 	return  k*3 + l;	
 }
 
+void output_sol()
+{
+  for (size_t i=0; i<SUDOKU_SIZE;++i)
+  {
+    for (size_t j=0; j<SUDOKU_SIZE;++j)
+    {
+      if (j>0 && j%3==0)
+        printf("|");
+      printf("%-2lu", cells[i][j]);
+    }
+    printf("\n");
+    if (i%3==2)
+      printf("-------------------\n");
+  }
+
+}
   bool is_legal(cell const& c, size_t val)
   {
     for (size_t i=0; i<SUDOKU_SIZE; ++i)
@@ -44,7 +60,11 @@ static  bool solve()
   {
     //find the first empty cell
     auto c= GetNextFreeCell( );
-    if (c.row==9) return true;
+    if (c.row==9)
+    {
+      output_sol();
+      return false;
+    }
     //fill the empty cell
     for (size_t val = 1; val <= SUDOKU_SIZE ; ++val)	{
       //bool found = legal(currentState,c);

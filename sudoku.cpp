@@ -17,22 +17,6 @@ void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t));
 
 
 
-void outputSol()
-{
-  for (size_t i=0; i<SUDOKU_SIZE;++i)
-  {
-    for (size_t j=0; j<SUDOKU_SIZE;++j)
-    {
-      if (j>0 && j%3==0)
-        printf("|");
-      printf("%-2lu", cells[i][j]);
-    }
-    printf("\n");
-    if (i%3==2)
-      printf("-------------------\n");
-  }
-
-}
 void insertDat(size_t x, size_t y , size_t w)
 {
   cell c{x,y};
@@ -52,8 +36,6 @@ int main(int argc, char* argv[])
     fclose(fp);
     printf("Reading done\n");
     ComputeSolution();
-    printf("Printing\n");
-    outputSol();
   }	
   return 0;
 }
