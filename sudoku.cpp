@@ -12,7 +12,6 @@
 #include <stdexcept>
 
 using namespace std;
-void getdat(FILE* fp, void (*updDat)(size_t,size_t,size_t));
 void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t));
 
 
@@ -28,14 +27,16 @@ int main(int argc, char* argv[])
   FILE *fp=fopen(argv[1], "r");
   if (fp!=NULL)
   {
-    //initi cells to zero
+    //init cells to zero
     for (size_t i=0; i<SUDOKU_SIZE; ++i)
       for (size_t j=0; j<SUDOKU_SIZE; ++j)
         cells[i][j]=0;
     getdat2(fp,insertDat);
     fclose(fp);
+    output_sol();
     printf("Reading done\n");
     ComputeSolution();
+    
   }	
   return 0;
 }
