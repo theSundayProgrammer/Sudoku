@@ -2,12 +2,14 @@ BUILD_DIR=./build
 CXX=g++
 .PHONY: all
 CXX_FLAGS=-DJUMBO_SUDOKU
-all: sudoku
+all: jumbo
 
 srcs = $(wildcard *.cpp)
 objs = $(srcs:%.cpp=$(BUILD_DIR)/%.o) 
 
-sudoku: $(objs)
+jumbo: $(BUILD_DIR)/solver.o\
+        $(BUILD_DIR)/inp.o\
+        $(BUILD_DIR)/sudoku.o
 	g++ -o $@ $^
 
 $(BUILD_DIR)/%.o: %.cpp cell.hpp
