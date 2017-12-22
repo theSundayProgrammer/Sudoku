@@ -1,8 +1,8 @@
 //#include "stdafx.h"
 #include <cstdio>
+#include "cell.hpp"
 void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t))
 {
-  const int SUDOKU_SIZE=21;
   size_t c;
   size_t x =0;
   size_t y =0;
