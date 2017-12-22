@@ -44,7 +44,7 @@ void output_sol()
     return true;
   }
 cell const lastCell = { SUDOKU_SIZE, SUDOKU_SIZE};
-  cell GetNextFreeCell() 
+  cell get_next_free_cell() 
   {
     //Search for the first empty cell
     for (size_t i=0; i<SUDOKU_SIZE; ++i)
@@ -56,30 +56,3 @@ cell const lastCell = { SUDOKU_SIZE, SUDOKU_SIZE};
         }
     return lastCell;
   }
-static  bool solve()
-  {
-    //find the first empty cell
-    auto c= GetNextFreeCell( );
-    if (c.row==9)
-    {
-      output_sol();
-      return false;
-    }
-    //fill the empty cell
-    for (size_t val = 1; val <= SUDOKU_SIZE ; ++val)	{
-      //bool found = legal(currentState,c);
-      bool found = is_legal(c,val);
-      if (found){
-        cells[c.row][c.col] = val;
-        if (solve()){
-          return true;
-        }else{
-          cells[c.row][c.col] = 0;
-        }
-      }
-    }
-    return false;
-  }
-bool ComputeSolution(){
-	return solve();
-}

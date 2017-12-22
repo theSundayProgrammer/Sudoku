@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <cstdio>
+#include "cell.hpp"
 void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t))
 {
   size_t c;
@@ -7,7 +8,7 @@ void getdat2(FILE* fp, void (*updDat)(size_t,size_t,size_t))
   size_t y =0;
   auto incr = [&]  ()  
   {
-    if (++y == 9)
+    if (++y == SUDOKU_SIZE )
     {
       ++x;
       y=0;
