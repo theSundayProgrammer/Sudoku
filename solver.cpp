@@ -10,7 +10,7 @@ size_t boxId(size_t row, size_t col)
 	size_t l = col/3;
 	return  k*3 + l;	
 }
-
+bool debug=false;
 void output_sol()
 {
   for (size_t i=0; i<SUDOKU_SIZE;++i)
@@ -76,11 +76,13 @@ void output_sol()
     auto box = boxId(c.row-row_start,c.col-col_start);
     size_t row = (box/3)*3+row_start;
     size_t col = (box%3)*3+col_start;
-    /*
+    if(debug)
+    {
     printf("c_row=%u,c_col=%u\n", c.row,c.col);
     printf("start_row=%u,start_col=%u\n", row_start,col_start);
     printf("row=%u,col=%u\n", row,col);
-    */
+    }
+  
     for(size_t i =0; i<3; ++i)
       for(size_t j=0; j<3; ++j)
         if (cells[row+i][col+j]==val)
@@ -158,20 +160,18 @@ static  bool solve()
       output_sol();
       return true;
     }
-   printf("free c_row=%u,c_col=%u\n", c.row,c.col);
+   
     //fill the empty cell
     for (size_t val = 1; val <= SUB_SIZE ; ++val)	{
       //bool found = legal(currentState,c);
       //
       bool found = is_legal(c,val);
       if (found){
-        printf("i=%lu,j=%lu,val=%lu\n", c.row, c.col,val);
         cells[c.row][c.col] = val;
-        if(c.row==0 && c.col==19 && val ==3)
-           output_sol();
         if (solve()){
           return true;
         }else{
+          printf("i=%lu,j=%lu,val=%lu\n\n", c.row, c.col,val);
           cells[c.row][c.col] = 0;
         }
       }
@@ -179,6 +179,6 @@ static  bool solve()
     return false;
   }
 bool ComputeSolution(){
-
+  //debug=true;
 	return solve();
 }

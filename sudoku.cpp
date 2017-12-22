@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
     output_sol();
     printf("Reading done\n");
     ComputeSolution();
+    output_sol();
     
   }	
   return 0;
