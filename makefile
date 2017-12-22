@@ -19,5 +19,5 @@ $(BUILD_DIR)/%.o: %.cpp cell.hpp
 
 # $(RM) is rm -f by default
 clean:
-	$(RM) $(objs) 
+	$(RM) $(objs) jumbo
 
