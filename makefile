@@ -1,7 +1,7 @@
 BUILD_DIR=./build
 CXX=g++
 .PHONY: all
-
+CXX_FLAGS=-DJUMBO_SUDOKU
 all: sudoku
 
 srcs = $(wildcard *.cpp)
