@@ -1,9 +1,11 @@
-Sudoku
+Sudoku Solve
 ======
-This repository contains all the source files required to build the application.Use your favourite build tools to compile and link the three CPP files. The application takes a commandline argument that is the name of a file that contains the initial data. Each line is of the form 
-(x,y,n)
-where x is the row, y is the column and n is the value of the cell. The last line is terminated with a semicolon.
-A sample input file is is shown in inp.txt.
+The make file builds two executables simple and jumbo. Simple is a Sudoku solver for the standard (3 * 3) * (3 * 3) Sudoku. Jumbo is essentially a solver for [Samurai sudoku](http://www.samurai-sudoku.com/) 
 
-Please use a stack size of at least 10 MB if you get a stack overflow.
+A sample input file is simple.txt. Essentially the appliation expects 81 characters between '1' and '9', and '.' to indicate blank. All other charachters are ignored and may be used to improve human readability.
+The jumbo application expects a 21 * 21 matrix with a similar syntax as shown in the sample 'jumbo.txt'
+
+
+The solver is a simple depth first algortithm. The difference between the two applications is in the utilities that solver uses.
+Admittedly the code contains duplication whose avoidance could have saved a few hours of debugging.
 
