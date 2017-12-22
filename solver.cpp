@@ -27,13 +27,13 @@ void output_sol()
     printf("\n");
     if (i%3==2)
     {
-    for (size_t j=0; j<SUDOKU_SIZE;++j)
-    {
-      if (j>0 && j%3==0)
-        printf("|");
-      printf("--");
-    }
-    printf("\n");
+      for (size_t j=0; j<SUDOKU_SIZE;++j)
+      {
+        if (j>0 && j%3==0)
+          printf("|");
+        printf("--");
+      }
+      printf("\n");
     }
   }
 
@@ -171,7 +171,7 @@ static  bool solve()
         if (solve()){
           return true;
         }else{
-          printf("i=%lu,j=%lu,val=%lu\n\n", c.row, c.col,val);
+          //printf("i=%lu,j=%lu,val=%lu\n\n", c.row, c.col,val);
           cells[c.row][c.col] = 0;
         }
       }
